@@ -1,23 +1,28 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 export default function App() {
- const [cont,setCont] = useState(0)
- const [loading,setLoading] = useState(true)
+  const [cont, setCont] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [users, setUsers] = useState([]);
+const fetchUser = async () => 
+  {
+    const response = await fetch('https://jsonplaceholder.typicode.com/users');
+    const json = await response.json();
 
+    setUsers(json);
+    setLoading(false);
+  }
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false)
-    }, 1000);
-  },[])
-  console.log(`primero`,cont)
+  useEffect( () =>{fetchUser() }, []);
 
   return (
-    
     <View style={styles.container}>
-      <Text style={styles.text} onPress={()=>setCont(cont+1)}>{loading?`Cargando`:`Open up App.js to start working on your app! ${cont}`}</Text>
-
+      <Text style={styles.text} onPress={() => setCont(cont + 1)}>
+        {loading
+          ? `Cargando`
+          : `Open up App.js to start working on your app! ${users[0].name}`}
+      </Text>
     </View>
   );
 }
@@ -29,7 +34,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  text:{
-    fontSize:24
-  }
+  text: {
+    fontSize: 24,
+  },
 });
