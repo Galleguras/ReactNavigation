@@ -1,31 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, View, Button } from 'react-native';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 
-export default function App() {
-  const [cont, setCont] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [users, setUsers] = useState([]);
-const fetchUser = async () => 
-  {
-    const response = await fetch('https://jsonplaceholder.typicode.com/users');
-    const json = await response.json();
-
-    setUsers(json);
-    setLoading(false);
-  }
-
-  useEffect( () =>{fetchUser() }, []);
-
+const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.text} onPress={() => setCont(cont + 1)}>
-        {loading
-          ? `Cargando`
-          : `Open up App.js to start working on your app! ${users[0].name}`}
-      </Text>
+      <Text style={styles.text}>Soy la pantalla Principal</Text>
+      <Button title="Ir a Detalle" onPress={() => navigation.push('Detalle')} />
     </View>
   );
-}
+};
+
+const DetailScreen = ({ navigation }) => {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.text}>Soy la pantalla Detalle</Text>
+      <Button title="Volver" onPress={() => navigation.goBack()} />
+    </View>
+  );
+};
+
+const AppNavigator = createStackNavigator(
+  {
+    Home: {
+      screen: HomeScreen,
+    },
+    Detalle: {
+      screen: DetailScreen,
+    },
+  },
+  { initialRouteName: 'Home' }
+);
+export default createAppContainer(AppNavigator);
 
 const styles = StyleSheet.create({
   container: {
