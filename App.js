@@ -1,93 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { Ionicons } from '@expo/vector-icons';
-import { StyleSheet, Text, View, Button } from 'react-native';
-import { createAppContainer, createSwitchNavigator } from 'react-navigation'
-import { createStackNavigator } from 'react-navigation-stack'
-import { createDrawerNavigator } from 'react-navigation-drawer'
+import { StyleSheet } from 'react-native';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import DetailScreen from './screens/Detail.js';
+import PostsScreen from './screens/Posts.js';
+import UsersScreen from './screens/Users.js';
 
-console.log(Ionicons);
-const Logo = () => <Text>Lalala</Text>
 
-const HomeScreen = ({ navigation }) => {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <Button
-	title="Ir a detalle"
-	onPress={() => navigation.navigate('Detalle')}
-      />
-    </View>
-  )
-}
-
-HomeScreen.navigationOptions = {
-  drawerIcon: ({ tintColor }) => {
-    return <Ionicons name='ios-information-circle' size={25} color={tintColor}/>
+const AppNavigator = createStackNavigator(
+  {
+    Users: {
+      screen: UsersScreen,
+    },
+    Posts: {
+      screen: PostsScreen,
+    },
+    Detail: {
+      screen: DetailScreen,
+    },
   },
-  headerTitle: <Logo />,
-  headerStyle: {
-    backgroundColor: '#f00',
-  },
-}
+  { initialRouteName: 'Users' }
+);
+export default createAppContainer(AppNavigator);
 
-const DetalleScreen = ({ navigation }) => {
-  const [cont, setCont] = useState(0)
-  const incrementar = () => setCont(cont + 1)
 
-  useEffect(() => {
-    navigation.setParams({ incrementar })
-  }, [cont])
-
-  const lala = navigation.getParam('lala', 'valor por defecto')
-  return (
-    <View style={styles.container}>
-      <Text>Soy la pantalla de detalle {cont}</Text>
-      <Button
-	title="Volver"
-	onPress={() => navigation.navigate("MiModal")}
-      />
-    </View>
-  )
-}
-
-DetalleScreen.navigationOptions = ({ navigation }) => {
-  return {
-    title: navigation.getParam('title', 'Cargando...'),
-    headerRight: (
-      <Button
-	onPress={navigation.getParam('incrementar')}
-	title="Mas 1"
-	color="#555"
-      />
-    ),
-  }
-}
-const AppNavigator = createSwitchNavigator({
-  Home: {
-    screen: HomeScreen,
-  },
-  Detalle: {
-    screen: DetalleScreen,
-  }
-}, {
-  initialRouteName: 'Home',
-})
-
-const RootStack = createStackNavigator({
-  Main: AppNavigator,
-  MiModal: () => <Text>Lalalal</Text>
-}, {
-  mode: 'modal',
-  headerMode: 'none',
-})
-
-export default createAppContainer(RootStack)
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
