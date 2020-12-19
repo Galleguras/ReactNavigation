@@ -1,10 +1,10 @@
-import React ,{useEffect,useState}from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-export default ({ title }) => {
+import React, { useEffect, useState } from 'react';
+import { Text, View, StyleSheet,TouchableOpacity } from 'react-native';
+export default ({ title, onPress }) => {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity onPress={onPress} style={styles.container}>
       <Text style={styles.texto}>{title}</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 
