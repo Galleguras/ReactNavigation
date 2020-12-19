@@ -1,10 +1,14 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default () => {
+export default ({navigation}) => {
+  const body = navigation.getParam('body')
+  const title = navigation.getParam('title')
   return (
     <View style={styles.container}>
-      <Text>hOLA</Text>
+      <Text>Detalle:</Text>
+      <Text>{title}</Text>
+      <Text>{body}</Text>
     </View>
   );
 };
